@@ -1,0 +1,52 @@
+﻿<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2>Welcome, {{name}}!</h2>
+                    </div>
+                    <div class="col-md-4 text-right"><h2><button class="btn btn-info" ng-click="exitChat()">Exist</button></h2></div>
+                </div>                            
+            </div>
+            <div class="panel-body">
+                <form ng-submit="sendMessage()">
+                    <div class="col-md-10 col-sm-12 col-xs-12">
+                        <input type="text" class="form-control" placeholder="Type your message" ng-model="message" ng-change="iAmTyping()" />
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12">
+                        <input type="submit" value="Send" class="btn btn-success btn-block" />
+                    </div>
+                    <div class="col-md-12">
+                        <span ng-repeat="userName in typingUsers">
+                            <b> {{userName}}</b> is typing;
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div ng-repeat="item in messages" class="row message">
+                    <div ng-class="isMyMessage(item.senderId) ? 'col-md-offset-1 col-md-5 col-xs-offset-1 col-xs-5 alert alert-success' : 'col-md-offset-6 col-md-5 col-xs-offset-6 col-xs-5 alert alert-warning'">
+                        <div class="row">
+                            <div class="col-md-7 sender">{{item.sender}}:</div>
+                            <div class="col-md-5 date text-right">{{item.date | date:'short'}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 body text-justify">{{item.message}}</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
