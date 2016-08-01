@@ -63,10 +63,11 @@ namespace Skarpline.Api.Hubs
         /// Handle start typing event
         /// </summary>
         /// <param name="userName"></param>
-        public void StartTyping(string userName)
+        /// <param name="text"></param>
+        public void StartTyping(string userName, string text)
         {
             if(string.IsNullOrWhiteSpace(userName)) return;
-            Clients.All.startTypig(userName);
+            Clients.All.startTypig(userName, text);
         }
 
         /// <summary>

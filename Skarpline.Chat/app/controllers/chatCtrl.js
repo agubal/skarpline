@@ -15,17 +15,27 @@ function ($scope, authService, $location, $interval, host, apiClientService) {
         $scope.messages.splice(0, 0, message);
         $scope.$apply();
     });
-    $scope.chatHub.on('startTypig', function (name) {
+    $scope.chatHub.on('startTypig', function (name, text) {
         if (name === $scope.name) {
             return;
         }
-        if ($scope.typingUsers.indexOf(name) === -1) {
-            $scope.typingUsers.push(name);
-            $scope.$apply();
-        }       
+
+        for (var i = 0; i < $scope.typingUsers.length; i++) {
+            if ($scope.typingUsers[i].sender === name) {
+                $scope.typingUsers[i].text = text;
+                $scope.$apply();
+                return;
+            }
+        }
+        $scope.typingUsers.push({
+            sender: name,
+            text: text
+        });
+        $scope.$apply();
     });
     $scope.chatHub.on('stopTypig', function (name) {
-        var index = $scope.typingUsers.indexOf(name);
+        var index = getTypingMessagePositionByName(name);
+        console.log(index);
         if (index === -1) {
             return;
         }
@@ -46,10 +56,11 @@ function ($scope, authService, $location, $interval, host, apiClientService) {
 
     var lastTypeinDate = Date.now();
     var isTyping = false;
+
     $scope.iAmTyping = function () {
         lastTypeinDate = Date.now();
         isTyping = true;
-        $scope.chatHub.invoke("StartTyping", authService.authentication.userName);
+        $scope.chatHub.invoke("StartTyping", authService.authentication.userName, $scope.message);
     }
 
     $interval(function () {
@@ -68,5 +79,15 @@ function ($scope, authService, $location, $interval, host, apiClientService) {
     $scope.exitChat = function () {
         connection.stop();
         authService.logOut();
+    }
+
+    function getTypingMessagePositionByName(name) {
+
+        for (var i = 0; i < $scope.typingUsers.length; i++) {
+            if ($scope.typingUsers[i].sender === name) {
+                return i;
+            }
+        }
+        return -1;
     }
 }]);

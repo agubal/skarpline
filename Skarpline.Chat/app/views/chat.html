@@ -19,8 +19,8 @@
                         <input type="submit" value="Send" class="btn btn-success btn-block" />
                     </div>
                     <div class="col-md-12">
-                        <span ng-repeat="userName in typingUsers">
-                            <b> {{userName}}</b> is typing;
+                        <span ng-repeat="typingMessage in typingUsers">
+                            <b>{{typingMessage.sender}}</b> is typing: {{typingMessage.text}};
                         </span>
                     </div>
                 </form>
